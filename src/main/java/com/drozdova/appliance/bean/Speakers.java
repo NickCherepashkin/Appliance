@@ -1,5 +1,8 @@
 package com.drozdova.appliance.bean;
 
+import com.drozdova.appliance.bean.criteria.SearchCriteria;
+
+import java.util.Map;
 import java.util.Objects;
 
 public class Speakers extends Appliance {
@@ -13,6 +16,13 @@ public class Speakers extends Appliance {
     private int cordLength;
 
     public Speakers() {
+    }
+
+    public Speakers(Map<String, String> paramsMap) {
+        this.powerConsumption = Integer.parseInt(paramsMap.get(SearchCriteria.Speakers.POWER_CONSUMPTION.toString()));
+        this.numberOfSpeakers = Integer.parseInt(paramsMap.get(SearchCriteria.Speakers.NUMBER_OF_SPEAKERS.toString()));
+        this.frequencyRange = paramsMap.get(SearchCriteria.Speakers.FREQUENCY_RANGE.toString());
+        this.cordLength = Integer.parseInt(paramsMap.get(SearchCriteria.Speakers.CORD_LENGTH.toString()));
     }
 
     public Speakers(double width, double depth, double height, double weight, int powerConsumption, int numberOfSpeakers, String frequencyRange, int cordLength) {

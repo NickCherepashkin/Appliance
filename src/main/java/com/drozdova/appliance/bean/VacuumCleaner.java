@@ -1,5 +1,8 @@
 package com.drozdova.appliance.bean;
 
+import com.drozdova.appliance.bean.criteria.SearchCriteria;
+
+import java.util.Map;
 import java.util.Objects;
 
 public class VacuumCleaner extends Appliance {
@@ -17,6 +20,15 @@ public class VacuumCleaner extends Appliance {
     private int cleaningWidth;
 
     public VacuumCleaner() {
+    }
+
+    public VacuumCleaner(Map<String, String> paramsMap) {
+        this.powerConsumption = Integer.parseInt(paramsMap.get(SearchCriteria.VacuumCleaner.POWER_CONSUMPTION.toString()));
+        this.filterType = paramsMap.get(SearchCriteria.VacuumCleaner.FILTER_TYPE.toString());
+        this.bagType = paramsMap.get(SearchCriteria.VacuumCleaner.BAG_TYPE.toString());
+        this.wandType = paramsMap.get(SearchCriteria.VacuumCleaner.WAND_TYPE.toString());
+        this.motorSpeedRegulation = Integer.parseInt(paramsMap.get(SearchCriteria.VacuumCleaner.MOTOR_SPEED_REGULATION.toString()));
+        this.cleaningWidth = Integer.parseInt(paramsMap.get(SearchCriteria.VacuumCleaner.CLEANING_WIDTH.toString()));
     }
 
     public VacuumCleaner(double width, double depth, double height, double weight, int powerConsumption, String filterType, String bagType, String wandType, int motorSpeedRegulation, int cleaningWidth) {

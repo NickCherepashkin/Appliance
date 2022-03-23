@@ -1,5 +1,9 @@
 package com.drozdova.appliance.bean;
 
+import com.drozdova.appliance.bean.criteria.SearchCriteria;
+
+import java.util.Map;
+
 public class Oven extends Appliance{
     // POWER_CONSUMPTION,
     // WEIGHT,
@@ -14,8 +18,23 @@ public class Oven extends Appliance{
         super();
     }
 
+    public Oven(Map<String, String> paramsMap) {
+        this.powerConsumption = Integer.parseInt(paramsMap.get(SearchCriteria.Oven.POWER_CONSUMPTION.toString()));
+        this.setWeight(Double.parseDouble(paramsMap.get(SearchCriteria.Oven.WEIGHT.toString())));
+        this.capacity = Integer.parseInt(paramsMap.get(SearchCriteria.Oven.CAPACITY.toString()));
+        this.setDepth(Double.parseDouble(paramsMap.get(SearchCriteria.Oven.DEPTH.toString())));
+        this.setHeight(Double.parseDouble(paramsMap.get(SearchCriteria.Oven.HEIGHT.toString())));
+        this.setWidth(Double.parseDouble(paramsMap.get(SearchCriteria.Oven.WIDTH.toString())));
+
+    }
+
     public Oven(int powerConsumption, double weight, int capacity, double depth, double height, double width) {
         super(width, depth, height, weight);
+        this.powerConsumption = powerConsumption;
+        this.capacity = capacity;
+    }
+
+    public Oven(int powerConsumption, int capacity) {
         this.powerConsumption = powerConsumption;
         this.capacity = capacity;
     }

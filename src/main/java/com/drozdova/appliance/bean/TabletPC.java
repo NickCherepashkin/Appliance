@@ -1,5 +1,8 @@
 package com.drozdova.appliance.bean;
 
+import com.drozdova.appliance.bean.criteria.SearchCriteria;
+
+import java.util.Map;
 import java.util.Objects;
 
 public class TabletPC extends Appliance {
@@ -15,6 +18,14 @@ public class TabletPC extends Appliance {
         private String color;
 
         public TabletPC() {
+        }
+
+        public TabletPC(Map<String, String> paramsMap) {
+                this.batteryCapacity = Integer.parseInt(paramsMap.get(SearchCriteria.TabletPC.BATTERY_CAPACITY.toString()));
+                this.displayInches = Double.parseDouble(paramsMap.get(SearchCriteria.TabletPC.DISPLAY_INCHES.toString()));
+                this.memoryRom = Integer.parseInt(paramsMap.get(SearchCriteria.TabletPC.MEMORY_ROM.toString()));
+                this.flashMemoryCapacity = Integer.parseInt(paramsMap.get(SearchCriteria.TabletPC.FLASH_MEMORY_CAPACITY.toString()));
+                this.color = paramsMap.get(SearchCriteria.TabletPC.BATTERY_CAPACITY.toString());
         }
 
         public TabletPC(double width, double depth, double height, double weight, int batteryCapacity, double displayInches, int memoryRom, int flashMemoryCapacity, String color) {

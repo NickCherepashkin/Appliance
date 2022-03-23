@@ -49,6 +49,8 @@ public class Appliance {
         this.weight = weight;
     }
 
+    public void getPrice() {}
+
     @Override
     public String toString() {
         return  "width=" + width +

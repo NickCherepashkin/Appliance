@@ -1,5 +1,8 @@
 package com.drozdova.appliance.bean;
 
+import com.drozdova.appliance.bean.criteria.SearchCriteria;
+
+import java.util.Map;
 import java.util.Objects;
 
 public class Refrigerator extends Appliance{
@@ -14,6 +17,15 @@ public class Refrigerator extends Appliance{
     private double overallCapacity;
 
     public Refrigerator() {
+    }
+
+    public Refrigerator(Map<String, String> paramsMap) {
+        this.powerConsumption = Integer.parseInt(paramsMap.get(SearchCriteria.Refrigerator.POWER_CONSUMPTION.toString()));
+        this.setWeight(Double.parseDouble(paramsMap.get(SearchCriteria.Refrigerator.WEIGHT.toString())));
+        this.freezerCapacity = Integer.parseInt(paramsMap.get(SearchCriteria.Refrigerator.FREEZER_CAPACITY.toString()));
+        this.overallCapacity = Double.parseDouble(paramsMap.get(SearchCriteria.Refrigerator.OVERALL_CAPACITY.toString()));
+        this.setHeight(Double.parseDouble(paramsMap.get(SearchCriteria.Refrigerator.HEIGHT.toString())));
+        this.setWidth(Double.parseDouble(paramsMap.get(SearchCriteria.Refrigerator.WIDTH.toString())));
     }
 
     public Refrigerator(double width, double height, double weight, int powerConsumption, int freezerCapacity, double overallCapacity) {

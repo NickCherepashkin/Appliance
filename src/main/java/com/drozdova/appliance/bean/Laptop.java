@@ -1,5 +1,8 @@
 package com.drozdova.appliance.bean;
 
+import com.drozdova.appliance.bean.criteria.SearchCriteria;
+
+import java.util.Map;
 import java.util.Objects;
 
 public class Laptop extends Appliance{
@@ -27,6 +30,21 @@ public class Laptop extends Appliance{
         this.systemMemory = systemMemory;
         this.cpu = cpu;
         this.displayInches = displayInches;
+    }
+
+    public Laptop (Map<String, String> paramsMap) {
+        this.batteryCapacity = Double.parseDouble(paramsMap.get(SearchCriteria.Laptop.BATTERY_CAPACITY.toString()));
+        this.os = paramsMap.get(SearchCriteria.Laptop.OS.toString());
+        this.memoryRom = Integer.parseInt(paramsMap.get(SearchCriteria.Laptop.MEMORY_ROM.toString()));
+        this.systemMemory = Integer.parseInt(paramsMap.get(SearchCriteria.Laptop.SYSTEM_MEMORY.toString()));
+        this.cpu = Double.parseDouble(paramsMap.get(SearchCriteria.Laptop.CPU.toString()));
+        this.displayInches = Double.parseDouble(paramsMap.get(SearchCriteria.Laptop.DISPLAY_INCHS.toString()));
+    }
+
+    public Laptop(double batteryCapacity, String os) {
+        super();
+        this.batteryCapacity = batteryCapacity;
+        this.os = os;
     }
 
     public double getBatteryCapacity() {
