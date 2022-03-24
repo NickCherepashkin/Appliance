@@ -19,6 +19,7 @@ import java.util.Map;
 
 public class ApplianceDAOImpl implements ApplianceDAO {
     private final String DB_PATH = "/appliances_db.txt";
+    private final String BEAN_PACKAGE = "com.drozdova.appliance.bean.";
 
     private ApplianceCreator creator = new ApplianceCreator();
 
@@ -59,7 +60,7 @@ public class ApplianceDAOImpl implements ApplianceDAO {
                             for (String param: params) {
                                 paramsMap.put(param.split("=")[0], param.split("=")[1]);
                             }
-                            Appliance app =  (Appliance)Class.forName("com.drozdova.appliance.bean." + findAppliance).getConstructor(Map.class).newInstance(paramsMap);
+                            Appliance app =  (Appliance)Class.forName(BEAN_PACKAGE + findAppliance).getConstructor(Map.class).newInstance(paramsMap);
                             appList.add(app);
                         }
                     }
