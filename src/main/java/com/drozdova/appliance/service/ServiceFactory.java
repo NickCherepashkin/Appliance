@@ -7,6 +7,7 @@ public class ServiceFactory {
     private final ApplianceService applianceService = new ApplianceServiceImpl();
 
     private ServiceFactory() {}
+
     public static ServiceFactory getInstance() {
         return instance;
     }

@@ -1,6 +1,7 @@
 package com.drozdova.appliance.main;
 
 import com.drozdova.appliance.bean.Appliance;
+import com.drozdova.appliance.bean.Laptop;
 import com.drozdova.appliance.bean.Oven;
 import com.drozdova.appliance.bean.TabletPC;
 import com.drozdova.appliance.bean.criteria.Criteria;
@@ -21,19 +22,16 @@ public class Main {
 
         //////////////////////////////////////////////////////////////////
 
-
-        Criteria criteriaOven = new Criteria(Oven.class.getSimpleName());//"Oven"
-        criteriaOven.add(SearchCriteria.Oven.CAPACITY.toString(), 33);
-
-        appliance = service.find(criteriaOven);
-
+        Criteria criteriaLaptop = new Criteria(Laptop.class.getSimpleName());//"Laptop"
+        criteriaLaptop.add(SearchCriteria.Laptop.MEMORY_ROM.toString(), 8000);
+        appliance = service.find(criteriaLaptop);
         PrintApplianceInfo.print(appliance);
 
         //////////////////////////////////////////////////////////////////
 
-        criteriaOven = new Criteria(Oven.class.getSimpleName());
-        criteriaOven.add(SearchCriteria.Oven.HEIGHT.toString(), 200);
-        criteriaOven.add(SearchCriteria.Oven.DEPTH.toString(), 300);
+        Criteria criteriaOven = new Criteria(Oven.class.getSimpleName());
+        criteriaOven.add(SearchCriteria.Oven.HEIGHT.toString(), 45.5);
+        criteriaOven.add(SearchCriteria.Oven.DEPTH.toString(), 60);
 
         appliance = service.find(criteriaOven);
 

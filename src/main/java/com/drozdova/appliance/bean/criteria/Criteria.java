@@ -1,14 +1,11 @@
 package com.drozdova.appliance.bean.criteria;
 
-import com.drozdova.appliance.bean.Appliance;
-
 import java.util.HashMap;
 import java.util.Map;
 
 public class Criteria {
     private String groupSearchName;
-    // создается список критериев для поиска
-    private Map<String, Object> criteria = new HashMap<String, Object>();
+    private Map<String, Object> criteria = new HashMap<>();
 
     public Criteria(String groupSearchName) {
         this.groupSearchName = groupSearchName;

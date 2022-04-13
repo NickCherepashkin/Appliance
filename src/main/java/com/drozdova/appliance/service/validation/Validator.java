@@ -8,14 +8,21 @@ public final class Validator {
     private Validator() { }
 
     public static boolean criteriaValidator(final Criteria criteria) {
-
-        switch (criteria.getGroupSearchName()) {
-            case "Oven", "Laptop", "TabletPC": break;
-            default: return false;
+        if (criteria == null) {
+            throw new RuntimeException("Error. Search criteria not selected.");
         }
+
+        if(criteria.getGroupSearchName().isEmpty()) {
+            throw new RuntimeException("Error. Appliance type not selected.");
+        }
+
+        if (criteria.getCriteria().size() == 0) {
+            throw new RuntimeException("Error. Appliance criteries not selected.");
+        }
+
         for (Map.Entry<String, Object> entry : criteria.getCriteria().entrySet()) {
             if (entry.getValue() == null) {
-                return  false;
+                throw new RuntimeException("Error. Not all values entered for select criteries.");
             }
         }
         return true;

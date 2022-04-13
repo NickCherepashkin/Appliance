@@ -1,31 +1,12 @@
 package com.drozdova.appliance.bean;
 
-import com.drozdova.appliance.bean.criteria.SearchCriteria;
-
-import java.util.Map;
+import java.util.Objects;
 
 public class Oven extends Appliance{
-    // POWER_CONSUMPTION,
-    // WEIGHT,
-    // CAPACITY,
-    // DEPTH,
-    // HEIGHT,
-    // WIDTH
     private int powerConsumption;
     private int capacity;
 
-    public Oven() {
-        super();
-    }
-
-    public Oven(Map<String, String> paramsMap) {
-        this.powerConsumption = Integer.parseInt(paramsMap.get(SearchCriteria.Oven.POWER_CONSUMPTION.toString()));
-        this.setWeight(Double.parseDouble(paramsMap.get(SearchCriteria.Oven.WEIGHT.toString())));
-        this.capacity = Integer.parseInt(paramsMap.get(SearchCriteria.Oven.CAPACITY.toString()));
-        this.setDepth(Double.parseDouble(paramsMap.get(SearchCriteria.Oven.DEPTH.toString())));
-        this.setHeight(Double.parseDouble(paramsMap.get(SearchCriteria.Oven.HEIGHT.toString())));
-        this.setWidth(Double.parseDouble(paramsMap.get(SearchCriteria.Oven.WIDTH.toString())));
-
+    private Oven() {
     }
 
     public Oven(int powerConsumption, double weight, int capacity, double depth, double height, double width) {
@@ -43,23 +24,51 @@ public class Oven extends Appliance{
         return powerConsumption;
     }
 
-    public void setPowerConsumption(int powerConsumption) {
-        this.powerConsumption = powerConsumption;
-    }
-
     public int getCapacity() {
         return capacity;
     }
 
-    public void setCapacity(int capacity) {
-        this.capacity = capacity;
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        if (!super.equals(o)) return false;
+        Oven oven = (Oven) o;
+        return getPowerConsumption() == oven.getPowerConsumption() && getCapacity() == oven.getCapacity();
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(super.hashCode(), getPowerConsumption(), getCapacity());
     }
 
     @Override
     public String toString() {
-        return Oven.class.getName() +  "{" +
+        return Oven.class.getSimpleName() +  " : " +
                 "powerConsumption=" + powerConsumption +
                 ", capacity=" + capacity +
-                "} " + super.toString();
+                ", " + super.toString();
+    }
+
+    public static Builder newBuilder() {
+        return new Oven().new Builder();
+    }
+
+    public class Builder extends Appliance.Builder {
+        private Builder() {}
+
+        public Builder setPowerConsumption(int powerConsumption) {
+            Oven.this.powerConsumption = powerConsumption;
+            return this;
+        }
+
+        public Builder setCapacity(int capacity) {
+            Oven.this.capacity = capacity;
+            return this;
+        }
+
+        public Oven build() {
+            return Oven.this;
+        }
     }
 }

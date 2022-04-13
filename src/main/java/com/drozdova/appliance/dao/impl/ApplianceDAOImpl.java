@@ -2,65 +2,53 @@ package com.drozdova.appliance.dao.impl;
 
 import com.drozdova.appliance.bean.Appliance;
 import com.drozdova.appliance.bean.criteria.Criteria;
-import com.drozdova.appliance.dao.ApplianceCreator;
+import com.drozdova.appliance.constructor.ConstructorOfAppliance;
 import com.drozdova.appliance.dao.ApplianceDAO;
 
-import javax.management.ConstructorParameters;
 import java.io.*;
-import java.lang.reflect.Constructor;
-import java.lang.reflect.InvocationTargetException;
-import java.net.URISyntaxException;
-import java.net.URL;
-import java.nio.file.Paths;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 public class ApplianceDAOImpl implements ApplianceDAO {
-    private final String DB_PATH = "/appliances_db.txt";
-    private final String BEAN_PACKAGE = "com.drozdova.appliance.bean.";
-
-    private ApplianceCreator creator = new ApplianceCreator();
 
     @Override
     public List <Appliance> find(Criteria criteria) throws IOException {
         File file;
         FileReader fileReader;
         BufferedReader reader = null;
-        List <Appliance> appList = new ArrayList<>();
+        List<Appliance> appList = new ArrayList<>();
+        ConstructorOfAppliance constructor = new ConstructorOfAppliance();
 
         try {
-            URL res = ApplianceDAOImpl.class.getResource(DB_PATH);
-            file = Paths.get(res.toURI()).toFile();
+
+            String DB_FILE_NAME = "appliances_db.txt";
+            String filePath = Objects.requireNonNull(getClass().getClassLoader().getResource(DB_FILE_NAME)).getPath();
+            file = new File(filePath);
             fileReader = new FileReader(file);
             reader = new BufferedReader(fileReader);
 
             String findAppliance = criteria.getGroupSearchName();
-
             String line = reader.readLine();
-            String lineOfParameters = null;
+            Map<String, String> paramsFromDB = new HashMap<>();
+            Map<String, Object> mapAppliance = new HashMap<>();
 
-            Map<String, String> paramsMap = new HashMap<String, String>();
-
-            while(line != null) {
+            String subStr;
+            while (line != null) {
                 if (!line.isEmpty()) {
-                    if(line.contains(findAppliance)) {
+                    if (line.contains(findAppliance)) {
                         boolean findResult = true;
-                        for(Map.Entry<String, Object> entry: criteria.getCriteria().entrySet()) {
-                            String subStr = entry.getKey() + "=" + entry.getValue();
-                            if(!line.contains(subStr)) {
+
+                        for (Map.Entry<String, Object> entry : criteria.getCriteria().entrySet()) {
+                            subStr = entry.getKey() + "=" + entry.getValue();
+                            if (!line.contains(subStr)) {
                                 findResult = false;
                                 break;
                             }
                         }
+
                         if (findResult) {
-                            lineOfParameters = line.replace(";", "").split(" : ")[1];
-                            String [] params = lineOfParameters.split(", ");
-                            for (String param: params) {
-                                paramsMap.put(param.split("=")[0], param.split("=")[1]);
-                            }
-                            Appliance app =  (Appliance)Class.forName(BEAN_PACKAGE + findAppliance).getConstructor(Map.class).newInstance(paramsMap);
+                            parseParams(line, paramsFromDB);
+                            constructor.setApplianceParams(paramsFromDB);
+                            Appliance app = (Appliance) createAppliance(mapAppliance, constructor).get(findAppliance);
                             appList.add(app);
                         }
                     }
@@ -68,8 +56,10 @@ public class ApplianceDAOImpl implements ApplianceDAO {
                 line = reader.readLine();
             }
 
-        } catch (FileNotFoundException | URISyntaxException | ClassNotFoundException | InvocationTargetException | InstantiationException | IllegalAccessException | NoSuchMethodException e) {
-            e.printStackTrace();
+        } catch (FileNotFoundException e) {
+            throw new RuntimeException("Error. File appliances_db.txt not found");
+        } catch (NullPointerException e) {
+            throw new RuntimeException("Error. File name is not correct.");
         } finally {
             if (reader != null) {
                 reader.close();
@@ -77,5 +67,28 @@ public class ApplianceDAOImpl implements ApplianceDAO {
         }
 
         return appList;
+    }
+
+    private Map<String, Object> createAppliance(Map<String, Object> mapAppliance, ConstructorOfAppliance constructor) {
+        mapAppliance.clear();
+        mapAppliance.put( "Laptop", constructor.constructLaptop());
+        mapAppliance.put("Oven", constructor.constructOven());
+        mapAppliance.put("Refrigerator", constructor.constructRefrigerator());
+        mapAppliance.put("Speakers", constructor.constructSpeakers());
+        mapAppliance.put("TabletPC", constructor.constructTabletPC());
+        mapAppliance.put("VacuumCleaner", constructor.constructVacuumCleaner());
+        return mapAppliance;
+    }
+
+    private void parseParams(String line, Map<String, String> paramsOfAppliance) {
+        paramsOfAppliance.clear();
+        line = line.trim().replace(" ", "").replace(";", "");
+        paramsOfAppliance.put("APPLIANCE_TYPE", line.split(":")[0]);
+        line = line.split(":")[1].trim().replace("=", " ").replace(",", " ");
+        String [] params = line.split(" ");
+
+        for(int i = 0; i < params.length; i += 2) {
+            paramsOfAppliance.put(params[i], params[i + 1]);
+        }
     }
 }

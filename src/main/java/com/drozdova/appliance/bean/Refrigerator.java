@@ -1,31 +1,13 @@
 package com.drozdova.appliance.bean;
 
-import com.drozdova.appliance.bean.criteria.SearchCriteria;
-
-import java.util.Map;
 import java.util.Objects;
 
 public class Refrigerator extends Appliance{
-    // POWER_CONSUMPTION,
-    // WEIGHT,
-    // FREEZER_CAPACITY,
-    // OVERALL_CAPACITY,
-    // HEIGHT,
-    // WIDTH
     private int powerConsumption;
     private int freezerCapacity;
     private double overallCapacity;
 
-    public Refrigerator() {
-    }
-
-    public Refrigerator(Map<String, String> paramsMap) {
-        this.powerConsumption = Integer.parseInt(paramsMap.get(SearchCriteria.Refrigerator.POWER_CONSUMPTION.toString()));
-        this.setWeight(Double.parseDouble(paramsMap.get(SearchCriteria.Refrigerator.WEIGHT.toString())));
-        this.freezerCapacity = Integer.parseInt(paramsMap.get(SearchCriteria.Refrigerator.FREEZER_CAPACITY.toString()));
-        this.overallCapacity = Double.parseDouble(paramsMap.get(SearchCriteria.Refrigerator.OVERALL_CAPACITY.toString()));
-        this.setHeight(Double.parseDouble(paramsMap.get(SearchCriteria.Refrigerator.HEIGHT.toString())));
-        this.setWidth(Double.parseDouble(paramsMap.get(SearchCriteria.Refrigerator.WIDTH.toString())));
+    private Refrigerator() {
     }
 
     public Refrigerator(double width, double height, double weight, int powerConsumption, int freezerCapacity, double overallCapacity) {
@@ -39,49 +21,61 @@ public class Refrigerator extends Appliance{
         return powerConsumption;
     }
 
-    public void setPowerConsumption(int powerConsumption) {
-        this.powerConsumption = powerConsumption;
-    }
-
     public int getFreezerCapacity() {
         return freezerCapacity;
-    }
-
-    public void setFreezerCapacity(int freezerCapacity) {
-        this.freezerCapacity = freezerCapacity;
     }
 
     public double getOverallCapacity() {
         return overallCapacity;
     }
 
-    public void setOverallCapacity(double overallCapacity) {
-        this.overallCapacity = overallCapacity;
-    }
-
     @Override
     public boolean equals(Object o) {
-        if (this == o) {
-            return true;
-        }
-        if (o == null || getClass() != o.getClass()) {
-            return false;
-        }
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        if (!super.equals(o)) return false;
         Refrigerator that = (Refrigerator) o;
-        return powerConsumption == that.powerConsumption && freezerCapacity == that.freezerCapacity && overallCapacity == that.overallCapacity;
+        return getPowerConsumption() == that.getPowerConsumption() && getFreezerCapacity() == that.getFreezerCapacity() && Double.compare(that.getOverallCapacity(), getOverallCapacity()) == 0;
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(powerConsumption, freezerCapacity, overallCapacity);
+        return Objects.hash(super.hashCode(), getPowerConsumption(), getFreezerCapacity(), getOverallCapacity());
     }
 
     @Override
     public String toString() {
-        return Refrigerator.class.getName() + "{" +
+        return Refrigerator.class.getSimpleName() + " : " +
                 "powerConsumption=" + powerConsumption +
                 ", freezerCapacity=" + freezerCapacity +
                 ", overallCapacity=" + overallCapacity +
-                super.toString() + "} ";
+                " " + super.toString();
+    }
+
+    public static Builder newBuilder() {
+        return new Refrigerator().new Builder();
+    }
+
+    public class Builder extends Appliance.Builder{
+        private Builder() {}
+
+        public Builder setPowerConsumption(int powerConsumption) {
+            Refrigerator.this.powerConsumption = powerConsumption;
+            return this;
+        }
+
+        public Builder setFreezerCapacity(int freezerCapacity) {
+            Refrigerator.this.freezerCapacity = freezerCapacity;
+            return this;
+        }
+
+        public Builder setOverallCapacity(double overallCapacity) {
+            Refrigerator.this.overallCapacity = overallCapacity;
+            return this;
+        }
+
+        public Refrigerator build() {
+            return Refrigerator.this;
+        }
     }
 }
